@@ -13,7 +13,7 @@ void printArgUsage(char* arg0) {
 	printf("Incorrect argument usage!\n Correct usage: %s <port> <baud rate>\n", arg0);
 	pause();
 }
-serial::Serial connect(	char *cport, char *cbaud = "9600") {
+int connect(char *cport, char *cbaud = "9600") {
 	string port(cport);
 	string sbaud(cbaud);
 	//Validate baud
@@ -22,19 +22,26 @@ serial::Serial connect(	char *cport, char *cbaud = "9600") {
 		baud = stoi(sbaud);
 	}
 	catch (out_of_range) {
-		printf("Baud rate was out of range!\nDefaulting to 9600.\n");
+		printf("\nBaud rate was out of range!\nDefaulting to 9600.\n");
 		baud = 9600;
 	}
 	catch (invalid_argument) {
-		printf("No valid number detected.\nDefaulting to 9600.\n");
+		printf("\nNo valid number detected.\nDefaulting to 9600.\n");
 		baud = 9600;
 	}
+	return baud;
 }
 int main(int argc, char *argv[]) {
-	if (argc != 3) {
+	if (argc < 2 || argc > 3) {
 		printArgUsage(argv[0]);
 		return 0;
 	}
-
+	if (argc == 2) {
+		printf("%i\n", connect(argv[1]));
+	}
+	else {
+		printf("%i\n", connect(argv[1], argv[2]));
+	}
+	pause();
 	return 0;
 }
